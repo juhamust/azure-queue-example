@@ -1,0 +1,63 @@
+trigger:
+  paths:
+    include:
+      - services/*
+
+variables:
+  servicesDir: "services"
+  sharedDir: "shared"
+  image: "ubuntu-latest"
+
+stages:
+  - stage: Build
+    displayName: Build and test services
+    jobs:
+      - job: Build
+        displayName: "Build and Test"
+        pool:
+          vmImage: $(image)
+
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: "10.x"
+            displayName: "Install Node.js"
+
+          - script: npm install
+            displayName: "Install dependencies"
+            workingDirectory: "$(servicesDir)"
+
+          - script: npm run build
+            displayName: "Compile Typescript"
+            workingDirectory: "$(servicesDir)"
+
+          - script: npm run test:ci
+            displayName: "Run tests"
+            workingDirectory: "$(servicesDir)"
+
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+              testRunner: JUnit
+              testResultsFiles: "$(servicesDir)/junit.xml"
+
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: "cobertura"
+              summaryFileLocation: "$(servicesDir)/coverage/cobertura-coverage.xml"
+
+          - script: mv node_modules dist/
+            displayName: "Copy node modules to deployment dir"
+            workingDirectory: "$(servicesDir)"
+
+          - task: ArchiveFiles@2
+            displayName: "Archive files"
+            inputs:
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/$(appDir)/dist"
+              includeRootFolder: false
+              archiveType: zip
+              archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+              replaceExistingArchive: true
+
+          - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+            artifact: drop

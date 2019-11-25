@@ -1,0 +1,13 @@
+{
+  "bindings": [
+    {
+      "name": "mySbMsg",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "queueName": "mustonenjtasks",
+      "connection": "MyServiceBusConnection"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "../build/handler.js"
+}
