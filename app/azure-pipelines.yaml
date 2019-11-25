@@ -1,15 +1,15 @@
 trigger:
   paths:
     include:
-      - services/*
+      - app/*
 
 variables:
-  servicesDir: "services"
+  appDir: "app"
   image: "ubuntu-latest"
 
 stages:
   - stage: Build
-    displayName: Build and test services
+    displayName: Build and test app
     jobs:
       - job: Build
         displayName: "Build and Test"
@@ -24,35 +24,20 @@ stages:
 
           - script: npm install
             displayName: "Install dependencies"
-            workingDirectory: "$(servicesDir)"
+            workingDirectory: "$(appDir)"
 
           - script: npm run build
             displayName: "Compile Typescript"
-            workingDirectory: "$(servicesDir)"
+            workingDirectory: "$(appDir)"
 
-          - script: npm run test:ci
+          - script: npm run test
             displayName: "Run tests"
-            workingDirectory: "$(servicesDir)"
-
-          - task: PublishTestResults@2
-            condition: succeededOrFailed()
-            inputs:
-              testRunner: JUnit
-              testResultsFiles: "$(servicesDir)/junit.xml"
-
-          - task: PublishCodeCoverageResults@1
-            inputs:
-              codeCoverageTool: "cobertura"
-              summaryFileLocation: "$(servicesDir)/coverage/cobertura-coverage.xml"
-
-          - script: mv node_modules dist/
-            displayName: "Copy node modules to deployment dir"
-            workingDirectory: "$(servicesDir)"
+            workingDirectory: "$(appDir)"
 
           - task: ArchiveFiles@2
             displayName: "Archive files"
             inputs:
-              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/$(appDir)/dist"
+              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/$(appDir)/build"
               includeRootFolder: false
               archiveType: zip
               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
