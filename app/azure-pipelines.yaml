@@ -30,7 +30,7 @@ stages:
             displayName: "Compile Typescript"
             workingDirectory: "$(appDir)"
 
-          - script: npm run test
+          - script: npm run test:ci
             displayName: "Run tests"
             workingDirectory: "$(appDir)"
 
