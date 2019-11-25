@@ -16,6 +16,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "jest src/ --setupFiles dotenv/config --reporters=jest-junit --collectCoverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -32,5 +33,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "jest-junit": "^9.0.0",
+    "ts-jest": "^24.1.0"
+  },
+  "jest": {
+    "coverageReporters": [
+      "cobertura"
+    ],
+    "preset": "ts-jest",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
   }
 }
