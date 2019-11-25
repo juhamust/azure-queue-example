@@ -1,5 +1,10 @@
-import { doThis } from "./handler";
+import { getSharedAccessToken } from "./handler";
 
-it("does this", () => {
-  doThis();
+it("generates shared access token", () => {
+  const token = getSharedAccessToken(
+    "https://mybus.servicebus.windows.net/myqueue",
+    "name",
+    "abc"
+  );
+  expect(token).toBeDefined();
 });
