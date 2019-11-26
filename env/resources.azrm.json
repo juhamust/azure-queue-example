@@ -37,7 +37,20 @@
       },
       "kind": "StorageV2",
       "properties": {
+        "publicAccess": "Blob"
       }
+    },
+    {
+      "name": "$web",
+      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+      "apiVersion": "2019-04-01",
+      "properties": {
+        "publicAccess": "Container",
+        "metadata": {
+        }
+      },
+      "resources": [
+      ]
     }
   ],
   "outputs": {
