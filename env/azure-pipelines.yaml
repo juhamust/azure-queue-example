@@ -1,0 +1,24 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - env/*
+
+variables:
+  envDir: "env"
+  vmImageName: "ubuntu-latest"
+
+stages:
+  - stage: Build
+    displayName: Publish templates
+    jobs:
+      - job: Build
+        displayName: "Publish"
+        pool:
+          vmImage: $(vmImageName)
+
+        steps:
+          - publish: $(envDir)
+            artifact: templates
