@@ -49,12 +49,15 @@
       },
       "resources": [
         {
-          "name": "[concat('default/', variables('blobContainerName'))]",
+          "name": "default/$web",
           "type": "blobServices/containers",
           "apiVersion": "2018-07-01",
           "dependsOn": [
             "[variables('storageAccountName')]"
-          ]
+          ],
+          "properties": {
+            "publicAccess": "Blob"
+          }
         }
       ]
     }
