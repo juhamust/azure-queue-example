@@ -4,40 +4,40 @@ trigger:
       - app/*
 
 variables:
-  appDir: "app"
-  image: "ubuntu-latest"
+  appDir: 'app'
+  image: 'ubuntu-latest'
 
 stages:
   - stage: Build
     displayName: Build and test app
     jobs:
       - job: Build
-        displayName: "Build and Test"
+        displayName: 'Build and Test'
         pool:
           vmImage: $(image)
 
         steps:
           - task: NodeTool@0
             inputs:
-              versionSpec: "10.x"
-            displayName: "Install Node.js"
+              versionSpec: '10.x'
+            displayName: 'Install Node.js'
 
           - script: npm install
-            displayName: "Install dependencies"
-            workingDirectory: "$(appDir)"
+            displayName: 'Install dependencies'
+            workingDirectory: '$(appDir)'
 
           - script: npm run build
-            displayName: "Compile Typescript"
-            workingDirectory: "$(appDir)"
+            displayName: 'Compile Typescript'
+            workingDirectory: '$(appDir)'
 
           - script: npm run test:ci
-            displayName: "Run tests"
-            workingDirectory: "$(appDir)"
+            displayName: 'Run tests'
+            workingDirectory: '$(appDir)'
 
           - task: ArchiveFiles@2
-            displayName: "Archive files"
+            displayName: 'Archive files'
             inputs:
-              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/$(appDir)/build…"
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/$(appDir)/build'
               includeRootFolder: false
               archiveType: zip
               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
