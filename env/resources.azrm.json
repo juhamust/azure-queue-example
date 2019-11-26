@@ -41,7 +41,7 @@
       }
     },
     {
-      "name": "$web",
+      "name": "[concat(variables('storageAccountName'), '/', '$web')]",
       "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
       "apiVersion": "2019-04-01",
       "properties": {
