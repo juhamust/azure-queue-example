@@ -1,21 +1,21 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from 'react'
 
 interface DataEntry {
-  id: string;
-  value: string;
+  id: string
+  value: string
 }
 
 const App: React.FC = () => {
-  const [data, setData] = useState<DataEntry[] | null>([]);
+  const [data, setData] = useState<DataEntry[] | null>([])
 
   const loadData = useCallback(() => {
     // TODO: Implement
-    setData([{ id: "abc", value: "dang" }]);
-  }, []);
+    setData([{ id: 'abc', value: 'dang' }])
+  }, [])
 
   useEffect(() => {
-    loadData();
-  });
+    loadData()
+  })
 
   return (
     <div className="App">
@@ -28,7 +28,7 @@ const App: React.FC = () => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

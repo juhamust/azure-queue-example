@@ -1,0 +1,26 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "no-eval": 0,
+    "indent": ["error", 2],
+    "no-plusplus": 0,
+    "arrow-parens": ["error", "as-needed"],
+    "comma-dangle": ["error", "always-multiline"],
+    "object-curly-newline": "off",
+    "function-paren-newline": "off",
+    "react/no-children-prop": "off",
+    "no-confusing-arrow": "off",
+    "no-console": "off"
+  },
+  "plugins": ["jest"],
+  "env": {
+    "jest/globals": true
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
+}
