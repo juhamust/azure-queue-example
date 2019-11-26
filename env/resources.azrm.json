@@ -38,18 +38,16 @@
       "kind": "StorageV2",
       "properties": {
         "publicAccess": "Blob"
-      }
-    },
-    {
-      "name": "[concat(variables('storageAccountName'), '/', '$web')]",
-      "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-      "apiVersion": "2019-04-01",
-      "properties": {
-        "publicAccess": "Container",
-        "metadata": {
-        }
       },
       "resources": [
+        {
+          "name": "$web",
+          "type": "blobServices/containers",
+          "apiVersion": "2018-07-01",
+          "dependsOn": [
+            "[variables('storageAccountName')]"
+          ]
+        }
       ]
     }
   ],
