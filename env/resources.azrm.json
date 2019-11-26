@@ -15,6 +15,13 @@
         "description": "Storage Account type"
       }
     },
+    "blobContainerName": {
+      "type": "string",
+      "defaultValue": "website",
+      "metadata": {
+        "description": "The name of Blob Container to store diagnostics logs from Web App."
+      }
+    },
     "location": {
       "type": "string",
       "defaultValue": "[resourceGroup().location]",
@@ -24,6 +31,7 @@
     }
   },
   "variables": {
+    "blobContainerName": "[toLower(parameters('blobContainerName'))]",
     "storageAccountName": "[concat('website', uniquestring(resourceGroup().id))]"
   },
   "resources": [
@@ -41,7 +49,7 @@
       },
       "resources": [
         {
-          "name": "$web",
+          "name": "[concat('default/', variables('blobContainerName'))]",
           "type": "blobServices/containers",
           "apiVersion": "2018-07-01",
           "dependsOn": [
