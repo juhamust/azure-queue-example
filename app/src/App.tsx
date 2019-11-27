@@ -10,7 +10,10 @@ const App: React.FC = () => {
 
   const loadData = useCallback(() => {
     // TODO: Implement
-    setData([{ id: 'abc', value: 'dang' }])
+    setData([
+      { id: 'abc', value: 'dang' },
+      { id: 'xyz', value: 'dong' },
+    ])
   }, [])
 
   useEffect(() => {
