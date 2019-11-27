@@ -4,55 +4,59 @@ trigger:
       - services/*
 
 variables:
-  servicesDir: "services"
-  image: "ubuntu-latest"
+  servicesDir: 'services'
+  image: 'ubuntu-latest'
 
 stages:
   - stage: Build
     displayName: Build and test services
     jobs:
       - job: Build
-        displayName: "Build and Test"
+        displayName: 'Build and Test'
         pool:
           vmImage: $(image)
 
         steps:
           - task: NodeTool@0
             inputs:
-              versionSpec: "10.x"
-            displayName: "Install Node.js"
+              versionSpec: '10.x'
+            displayName: 'Install Node.js'
 
           - script: npm install
-            displayName: "Install dependencies"
-            workingDirectory: "$(servicesDir)"
+            displayName: 'Install dependencies'
+            workingDirectory: '$(servicesDir)'
 
-          - script: npm run build
-            displayName: "Compile Typescript"
-            workingDirectory: "$(servicesDir)"
+          - script: npm run build:production
+            displayName: 'Compile Typescript'
+            workingDirectory: '$(servicesDir)'
 
           - script: npm run test:ci
-            displayName: "Run tests"
-            workingDirectory: "$(servicesDir)"
+            displayName: 'Run tests'
+            workingDirectory: '$(servicesDir)'
 
           - task: PublishTestResults@2
             condition: succeededOrFailed()
             inputs:
               testRunner: JUnit
-              testResultsFiles: "$(servicesDir)/junit.xml"
+              testResultsFiles: '$(servicesDir)/junit.xml'
 
           - task: PublishCodeCoverageResults@1
             inputs:
-              codeCoverageTool: "cobertura"
-              summaryFileLocation: "$(servicesDir)/coverage/cobertura-coverage.xml"
+              codeCoverageTool: 'cobertura'
+              summaryFileLocation: '$(servicesDir)/coverage/cobertura-coverage.xml'
+
+          - script: cp {host,function}.json build/
+            displayName: 'Copy config dir'
+            workingDirectory: '$(servicesDir)'
 
           - script: mv node_modules build/
-            displayName: "Copy node modules to deployment dir"
-            workingDirectory: "$(servicesDir)"
+            displayName: 'Copy node modules to deployment dir'
+            workingDirectory: '$(servicesDir)'
 
           - task: ArchiveFiles@2
-            displayName: "Archive files"
+            displayName: 'Archive files'
             inputs:
-              rootFolderOrFile: "$(System.DefaultWorkingDirectory)/$(servicesDir)/build"
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/$(servicesDir)/build'
               includeRootFolder: false
               archiveType: zip
               archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip

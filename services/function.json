@@ -9,5 +9,5 @@
     }
   ],
   "disabled": false,
-  "scriptFile": "../build/handler.js"
+  "scriptFile": "./build/handler.js"
 }
