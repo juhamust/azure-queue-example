@@ -26,10 +26,6 @@ stages:
             displayName: 'Install dependencies'
             workingDirectory: '$(servicesDir)'
 
-          - script: npm run build:production
-            displayName: 'Compile Typescript'
-            workingDirectory: '$(servicesDir)'
-
           - script: npm run test:ci
             displayName: 'Run tests'
             workingDirectory: '$(servicesDir)'
@@ -44,6 +40,10 @@ stages:
             inputs:
               codeCoverageTool: 'cobertura'
               summaryFileLocation: '$(servicesDir)/coverage/cobertura-coverage.xml'
+
+          - script: npm run build:production
+            displayName: 'Compile Typescript'
+            workingDirectory: '$(servicesDir)'
 
           - script: cp {host,function}.json build/
             displayName: 'Copy config dir'
