@@ -40,6 +40,20 @@
       "metadata": {
         "description": "The language worker runtime to load in the function app."
       }
+    },
+    "serviceBusNamespaceName": {
+      "type": "string",
+      "defaultValue": "azure-queue-example-ns",
+      "metadata": {
+        "description": "Name of the Service Bus namespace"
+      }
+    },
+    "serviceBusQueueName": {
+      "type": "string",
+      "defaultValue": "tasks",
+      "metadata": {
+        "description": "Name of the Queue"
+      }
     }
   },
   "variables": {
@@ -48,7 +62,10 @@
     "hostingPlanName": "[parameters('appName')]",
     "applicationInsightsName": "[parameters('appName')]",
     "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-    "functionWorkerRuntime": "[parameters('runtime')]"
+    "functionWorkerRuntime": "[parameters('runtime')]",
+    "defaultSASKeyName": "RootManageSharedAccessKey",
+    "authRuleResourceId": "[resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', parameters('serviceBusNamespaceName'), variables('defaultSASKeyName'))]",
+    "sbVersion": "2017-04-01"
   },
   "resources": [
     {
@@ -127,7 +144,7 @@
             },
             {
               "name": "WEBSITE_NODE_DEFAULT_VERSION",
-              "value": "8.11.1"
+              "value": "10.15.2"
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
@@ -136,6 +153,14 @@
             {
               "name": "FUNCTIONS_WORKER_RUNTIME",
               "value": "[variables('functionWorkerRuntime')]"
+            },
+            {
+              "name": "QUEUE_CONNECTION_STRING",
+              "value": "[listkeys(variables('authRuleResourceId'), variables('sbVersion')).primaryConnectionString]"
+            },
+            {
+              "name": "QUEUE_NAME",
+              "value": "[parameters('serviceBusQueueName')]"
             }
           ]
         }
@@ -153,12 +178,54 @@
         "ApplicationId": "[variables('applicationInsightsName')]",
         "Request_Source": "IbizaWebAppExtensionCreate"
       }
+    },
+    {
+      "apiVersion": "2017-04-01",
+      "name": "[parameters('serviceBusNamespaceName')]",
+      "type": "Microsoft.ServiceBus/namespaces",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Standard"
+      },
+      "properties": {
+      },
+      "resources": [
+        {
+          "apiVersion": "2017-04-01",
+          "name": "[parameters('serviceBusQueueName')]",
+          "type": "Queues",
+          "dependsOn": [
+            "[concat('Microsoft.ServiceBus/namespaces/', parameters('serviceBusNamespaceName'))]"
+          ],
+          "properties": {
+            "lockDuration": "PT5M",
+            "maxSizeInMegabytes": "1024",
+            "requiresDuplicateDetection": "false",
+            "requiresSession": "false",
+            "defaultMessageTimeToLive": "P10675199DT2H48M5.4775807S",
+            "deadLetteringOnMessageExpiration": "false",
+            "duplicateDetectionHistoryTimeWindow": "PT10M",
+            "maxDeliveryCount": "10",
+            "autoDeleteOnIdle": "P10675199DT2H48M5.4775807S",
+            "enablePartitioning": "false",
+            "enableExpress": "false"
+          }
+        }
+      ]
     }
   ],
   "outputs": {
     "storageAccountName": {
       "type": "string",
       "value": "[variables('storageAccountName')]"
+    },
+    "NamespaceConnectionString": {
+      "type": "string",
+      "value": "[listkeys(variables('authRuleResourceId'), variables('sbVersion')).primaryConnectionString]"
+    },
+    "SharedAccessPolicyPrimaryKey": {
+      "type": "string",
+      "value": "[listkeys(variables('authRuleResourceId'), variables('sbVersion')).primaryKey]"
     }
   }
 }

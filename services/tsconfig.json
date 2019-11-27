@@ -3,9 +3,10 @@
     "module": "commonjs",
     "target": "es6",
     "outDir": "build",
-    "sourceRoot": "./src/",
-    "rootDir": "./src/",
+    "sourceRoot": "src",
+    "rootDir": "src",
     "sourceMap": true,
-    "strict": false
+    "strict": false,
+    "allowSyntheticDefaultImports": true
   }
 }

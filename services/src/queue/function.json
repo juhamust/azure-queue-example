@@ -1,0 +1,14 @@
+{
+  "bindings": [
+    {
+      "name": "task",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "queueName": "%QUEUE_NAME%",
+      "connection": "QUEUE_CONNECTION_STRING"
+    }
+  ],
+  "disabled": false,
+  "entryPoint": "handle",
+  "scriptFile": "./handler.js"
+}

@@ -45,11 +45,7 @@ stages:
             displayName: 'Compile Typescript'
             workingDirectory: '$(servicesDir)'
 
-          - script: cp {host,function}.json build/
-            displayName: 'Copy config dir'
-            workingDirectory: '$(servicesDir)'
-
-          - script: mv node_modules build/
+          - script: mv node_modules/ build/
             displayName: 'Copy node modules to deployment dir'
             workingDirectory: '$(servicesDir)'
 
