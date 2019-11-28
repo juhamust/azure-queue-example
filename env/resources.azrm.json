@@ -167,6 +167,24 @@
       }
     },
     {
+      "name": "[concat(variables('functionAppName'), '-', 'config')]",
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2019-08-01",
+      "dependsOn": [
+        "[concat('Microsoft.Web/sites/', variables('functionAppName'))]"
+      ],
+      "tags": {
+        "displayName": "WebSettings"
+      },
+      "properties": {
+        "cors": {
+          "allowedOrigins": [
+            "*"
+          ]
+        }
+      }
+    },
+    {
       "apiVersion": "2018-05-01-preview",
       "name": "[variables('applicationInsightsName')]",
       "type": "microsoft.insights/components",

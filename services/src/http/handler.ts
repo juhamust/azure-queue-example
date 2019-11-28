@@ -45,10 +45,10 @@ export async function addItem() {
   await sender.sendBatch(generateItems(100))
 }
 
-export async function getItems(): Promise<string[]> {
+export async function getItems(): Promise<any[]> {
   const messages = await getQueueClient().peek(1000)
   return messages.map(message => {
-    return message.body
+    return { text: message.body, meta: message }
   })
 }
 
