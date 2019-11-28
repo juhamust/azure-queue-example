@@ -29,6 +29,8 @@ stages:
           - script: npm run build
             displayName: 'Compile Typescript'
             workingDirectory: '$(appDir)'
+            env:
+              REACT_APP_API_URL: '$(REACT_APP_API_URL)'
 
           - script: npm run test:ci
             displayName: 'Run tests'
