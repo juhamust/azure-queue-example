@@ -12,8 +12,8 @@ import {
 } from '@material-ui/core'
 
 interface DataEntry {
-  id: string
-  value: string
+  text: string
+  meta: any
 }
 
 const useStyles = makeStyles(theme => ({
@@ -104,7 +104,7 @@ const App: React.FC = () => {
         {(data || []).map((entry, index) => {
           return (
             <ListItem key={index}>
-              <ListItemText primary={entry} />
+              <ListItemText primary={entry.text} />
             </ListItem>
           )
         })}
