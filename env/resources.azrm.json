@@ -167,7 +167,7 @@
       }
     },
     {
-      "name": "[concat(variables('functionAppName'), '-', 'config')]",
+      "name": "config",
       "type": "Microsoft.Web/sites/config",
       "apiVersion": "2019-08-01",
       "dependsOn": [

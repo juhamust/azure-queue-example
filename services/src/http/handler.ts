@@ -91,6 +91,7 @@ export async function handle(context: Context, req: HttpRequest) {
   // Return listing
   const client = await getQueueClient()
   const items = await getItems(client)
+  client.close()
   return {
     body: JSON.stringify(items),
     headers: {
