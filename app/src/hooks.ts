@@ -3,6 +3,7 @@ import { TaskSeriesData, Tasker } from './interfaces'
 import { subSeconds } from 'date-fns'
 import axios from 'axios'
 
+const chartMaxSize = 20
 let intervalId: number = 0
 
 export function useTasker(apiUrl: string): Tasker {
@@ -22,10 +23,10 @@ export function useTasker(apiUrl: string): Tasker {
     })
     const seriesDataCopy = [...seriesData]
     seriesDataCopy.push({ x: new Date().valueOf(), y: response.data.length })
-    // Cap the series data to 10 items
+    // Cap the series data to chartMaxSize items
     setSeriesData(
-      seriesDataCopy.length > 10
-        ? seriesDataCopy.slice(seriesDataCopy.length - 10)
+      seriesDataCopy.length > chartMaxSize
+        ? seriesDataCopy.slice(seriesDataCopy.length - chartMaxSize)
         : seriesDataCopy
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps

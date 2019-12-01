@@ -47,13 +47,13 @@ const TaskChart = (props: Props) => {
       plotOptions: {
         series: {
           marker: {
-            radius: 5,
+            radius: 2,
           },
           dataLabels: {
-            enabled: false,
+            enabled: true,
             borderRadius: 2,
-            y: 10,
-            x: 20,
+            y: 0,
+            x: 0,
             shape: 'callout',
           },
         },
@@ -66,10 +66,7 @@ const TaskChart = (props: Props) => {
         },
       },
       title: {
-        text: '',
-      },
-      subtitle: {
-        text: 'Water',
+        text: 'Tasks',
       },
       xAxis: [
         {
@@ -79,7 +76,7 @@ const TaskChart = (props: Props) => {
       yAxis: [
         {
           title: {
-            text: 'Level',
+            text: 'Todo',
           },
         },
       ],

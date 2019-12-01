@@ -1,8 +1,6 @@
 import { createHmac } from 'crypto'
 import { Context, HttpRequest } from '@azure/functions'
 import { ServiceBusClient, QueueClient } from '@azure/service-bus'
-import generate from '@babel/generator'
-import { isContext } from 'vm'
 
 let queueClient: QueueClient = null
 
@@ -46,6 +44,7 @@ export async function addItem() {
 }
 
 export async function getItems(): Promise<any[]> {
+  // Peek has internal limit of 250
   const messages = await getQueueClient().peek(1000)
   return messages.map(message => {
     return { text: message.body, meta: message }
