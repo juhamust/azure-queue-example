@@ -43,12 +43,31 @@ export async function addItem() {
   await sender.sendBatch(generateItems(100))
 }
 
-export async function getItems(): Promise<any[]> {
-  // Peek has internal limit of 250
-  const messages = await getQueueClient().peek(1000)
-  return messages.map(message => {
-    return { text: message.body, meta: message }
-  })
+export async function getItems(
+  client: QueueClient,
+  pageLimit: number = 250
+): Promise<any[]> {
+  let items = []
+
+  const getBatch = async () => {
+    // NOTE: Peek has internal limit of 250
+    const messages = await client.peek(pageLimit)
+    return messages.map(message => {
+      return { text: message.body, meta: message }
+    })
+  }
+
+  // Iterate until we have all the messages
+  while (true) {
+    const batch = await getBatch()
+    items = items.concat(batch)
+
+    if (batch.length < pageLimit) {
+      break
+    }
+  }
+
+  return items
 }
 
 export async function handle(context: Context, req: HttpRequest) {
@@ -70,7 +89,8 @@ export async function handle(context: Context, req: HttpRequest) {
   }
 
   // Return listing
-  const items = await getItems()
+  const client = await getQueueClient()
+  const items = await getItems(client)
   return {
     body: JSON.stringify(items),
     headers: {
