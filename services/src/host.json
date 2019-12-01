@@ -4,8 +4,8 @@
     "serviceBus": {
       "prefetchCount": 100,
       "messageHandlerOptions": {
-        "autoComplete": false,
-        "maxConcurrentCalls": 2
+        "autoComplete": true,
+        "maxConcurrentCalls": 4
       }
     },
     "http": {
